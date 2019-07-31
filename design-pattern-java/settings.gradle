@@ -1,3 +1,4 @@
 rootProject.name = 'design-pattern-java'
 include 'FactoryMethod'
+include 'factory-method'
 

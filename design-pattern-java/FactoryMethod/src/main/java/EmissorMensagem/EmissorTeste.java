@@ -1,3 +1,5 @@
+package emissorMensagem;
+
 public class EmissorTeste {
 
     public static void main(String[] args) {

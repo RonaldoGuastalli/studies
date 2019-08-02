@@ -1,3 +1,5 @@
+package emissorMensagem;
+
 public class EmissorSMS implements Emissor {
 
     @Override

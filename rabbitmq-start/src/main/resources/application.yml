@@ -1,0 +1,28 @@
+server:
+  port: 9080
+
+##mensageria.rabbitmq.nome-host=10.11.103.10
+#mensageria:
+#  rabbitmq:
+#    nome-host: localhost
+#    porta: 5672
+#    usuario: guest
+#    senha: guest
+#    timeout: 10000
+
+spring:
+  profiles:
+    active: usage_message
+  rabbitmq:
+    host: 10.11.101.161
+    port: 32771
+    username: guest
+    password: guest
+
+logging:
+  level:
+    org: ERROR
+
+tutorial:
+  client:
+    duration: 10000

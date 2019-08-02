@@ -1,3 +1,5 @@
+package emissorMensagem;
+
 public class EmissorEmail implements Emissor{
     @Override
     public void envia(String mensagem) {

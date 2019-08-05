@@ -21,7 +21,6 @@ public class Tut2Sender {
 
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void send() {
-        for (int j = 0; j < 10; j++) {
             StringBuilder builder = new StringBuilder("Hello");
             if (dots.incrementAndGet() == 3) {
                 dots.set(1);
@@ -34,7 +33,5 @@ public class Tut2Sender {
             String message = builder.toString();
             template.convertAndSend(queue.getName(), message);
             System.out.println(" [x] Sent '" + message + "'");
-
-        }
     }
 }

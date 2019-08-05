@@ -14,8 +14,8 @@ spring:
   profiles:
     active: usage_message
   rabbitmq:
-    host: 10.11.101.161
-    port: 32771
+    host: 0.0.0.0
+    port: 5672
     username: guest
     password: guest
 

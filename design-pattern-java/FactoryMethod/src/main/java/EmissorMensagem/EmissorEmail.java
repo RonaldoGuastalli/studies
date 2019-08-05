@@ -1,4 +1,4 @@
-package emissorMensagem;
+package EmissorMensagem;
 
 public class EmissorEmail implements Emissor{
     @Override

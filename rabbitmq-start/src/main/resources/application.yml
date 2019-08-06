@@ -6,7 +6,7 @@ server:
 #  rabbitmq:
 #    nome-host: localhost
 #    porta: 5672
-#    usuario: guest
+#    usuario: guestd
 #    senha: guestser
 #    timeout: 10000
 

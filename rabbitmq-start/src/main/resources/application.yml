@@ -7,7 +7,7 @@ server:
 #    nome-host: localhost
 #    porta: 5672
 #    usuario: guest
-#    senha: guest
+#    senha: guestser
 #    timeout: 10000
 
 spring:

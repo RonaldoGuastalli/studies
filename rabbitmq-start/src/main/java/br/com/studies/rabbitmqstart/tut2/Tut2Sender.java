@@ -21,17 +21,16 @@ public class Tut2Sender {
 
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void send() {
-            StringBuilder builder = new StringBuilder("Hello");
-            if (dots.incrementAndGet() == 3) {
-                dots.set(1);
-            }
-
-            for (int i = 0; i < dots.get(); i++) {
-                builder.append('.');
-            }
-            builder.append(count.incrementAndGet());
-            String message = builder.toString();
-            template.convertAndSend(queue.getName(), message);
-            System.out.println(" [x] Sent '" + message + "'");
+        StringBuilder builder = new StringBuilder("Hello");
+        if (dots.getAndIncrement() == 3) {
+            dots.set(1);
+        }
+        for (int i = 0; i < dots.get(); i++) {
+            builder.append('.');
+        }
+        builder.append(count.incrementAndGet());
+        String message = builder.toString();
+        template.convertAndSend(queue.getName(), message);
+        System.out.println(" [x] Sent '" + message + "'");
     }
 }

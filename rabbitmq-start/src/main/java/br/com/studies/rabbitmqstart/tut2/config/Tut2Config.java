@@ -13,7 +13,7 @@ public class Tut2Config {
 
     @Bean
     public Queue hello() {
-        return new Queue("hello");
+        return new Queue("tut.hello");
     }
 
     @Profile("receiver")
@@ -28,6 +28,7 @@ public class Tut2Config {
         public Tut2Receiver receiver2() {
             return new Tut2Receiver(2);
         }
+
     }
 
     @Profile("sender")
@@ -35,4 +36,5 @@ public class Tut2Config {
     public Tut2Sender sender() {
         return new Tut2Sender();
     }
+
 }

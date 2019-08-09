@@ -15,7 +15,7 @@ public class ClienteDois implements AutoCloseable {
 
     private Connection connection;
     private Channel channel;
-    private String requestQueueName = "rpc_queue";
+    private static final String RPC_QUEUE = "rpc_queue";
 
     //inicialização
     public ClienteDois() throws IOException, TimeoutException {
@@ -23,6 +23,9 @@ public class ClienteDois implements AutoCloseable {
         factory.setHost("localhost");
         connection = factory.newConnection();
         channel = connection.createChannel();
+        // Declara a fila fixa, caso ela não exista
+        channel.queueDeclare(RPC_QUEUE, false, false, false, null);
+
     }
 
 
@@ -51,7 +54,7 @@ public class ClienteDois implements AutoCloseable {
                 .replyTo(replyQueueName)
                 .build();
         // Publicar na fila reply
-        channel.basicPublish("", requestQueueName, props, message.getBytes("UTF-8"));
+        channel.basicPublish("", RPC_QUEUE, props, message.getBytes("UTF-8"));
 
         //
         final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);

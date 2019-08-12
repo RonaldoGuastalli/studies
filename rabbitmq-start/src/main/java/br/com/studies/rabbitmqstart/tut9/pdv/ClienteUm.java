@@ -1,39 +1,65 @@
 package br.com.studies.rabbitmqstart.tut9;
 
+import br.com.studies.rabbitmqstart.tut9.model.Filial;
+import br.com.studies.rabbitmqstart.tut9.model.Produto;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeoutException;
 
-public class ClienteDois implements AutoCloseable {
+public class ClienteUm implements AutoCloseable {
 
     private Connection connection;
     private Channel channel;
     private static final String RPC_QUEUE = "rpc_queue";
 
     //inicialização
-    public ClienteDois() throws IOException, TimeoutException {
+    public ClienteUm() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         connection = factory.newConnection();
         channel = connection.createChannel();
         // Declara a fila fixa, caso ela não exista
         channel.queueDeclare(RPC_QUEUE, false, false, false, null);
-
     }
 
 
     public static void main(String[] args) {
+
+        Produto produto1 = Produto.builder()
+                .id(1)
+                .nome("Dipirona")
+                .valor(100.00)
+                .filial(Filial.builder()
+                        .cidade("Canoas")
+                        .codigo("100")
+                        .build())
+                .build();
+        Produto produto2 = Produto.builder()
+                .id(1)
+                .nome("Dorflex")
+                .valor(10.00)
+                .filial(Filial.builder()
+                        .cidade("Canoas")
+                        .codigo("100")
+                        .build())
+                .build();
+
         // Objeto no cliente
-        String request = "mensagem do CLIENTE 2";
+        List<Produto> request = new ArrayList<>();
+        request.add(produto1);
+        request.add(produto2);
+
         try {
-            ClienteDois cliente = new ClienteDois();
+            ClienteUm cliente = new ClienteUm();
             String response = cliente.call(request);
             System.out.println(" [.] Got '" + response + "'");
 
@@ -42,7 +68,7 @@ public class ClienteDois implements AutoCloseable {
         }
     }
 
-    public String call(String message) throws IOException, InterruptedException {
+    public String call(List<Produto> message) throws IOException, InterruptedException {
         // Gerar id
         final String coorId = UUID.randomUUID().toString();
         // Nome da queue de reply
@@ -54,7 +80,8 @@ public class ClienteDois implements AutoCloseable {
                 .replyTo(replyQueueName)
                 .build();
         // Publicar na fila reply
-        channel.basicPublish("", RPC_QUEUE, props, message.getBytes("UTF-8"));
+        byte[] messageBytes = ConvertObjectToByteArray.mapperToByte(message);
+        channel.basicPublish("", RPC_QUEUE, props, messageBytes);
 
         //
         final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
@@ -76,4 +103,6 @@ public class ClienteDois implements AutoCloseable {
     public void close() throws Exception {
         connection.close();
     }
+
+
 }

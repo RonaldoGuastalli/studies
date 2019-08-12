@@ -1,9 +1,8 @@
 package br.com.studies.rabbitmqstart.tut9.pdv;
 
 import br.com.studies.rabbitmqstart.tut9.mapper.Mapper;
-import br.com.studies.rabbitmqstart.tut9.util.ConvertObjectToByteArray;
-import br.com.studies.rabbitmqstart.tut9.model.Filial;
 import br.com.studies.rabbitmqstart.tut9.model.Produto;
+import br.com.studies.rabbitmqstart.tut9.util.ConvertObjectToByteArray;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -17,14 +16,14 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeoutException;
 
-public class ClienteUm implements AutoCloseable {
+public class ClienteDois implements AutoCloseable {
 
     private Connection connection;
     private Channel channel;
     private static final String RPC_QUEUE = "rpc_queue";
 
     //inicialização
-    public ClienteUm() throws IOException, TimeoutException {
+    public ClienteDois() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         connection = factory.newConnection();
@@ -38,16 +37,16 @@ public class ClienteUm implements AutoCloseable {
 
         Produto produto1 = Mapper.mapperToProduto(
                 1,
-                "Paracetamol",
-                100.00,
-                "1",
-                "Porto Alegre");
+                "Dipirona",
+                55.00,
+                "2",
+                "Canoas");
         Produto produto2 = Mapper.mapperToProduto(
                 2,
                 "Dipirona",
-                10.00,
-                "1",
-                "Porto Alegre");
+                55.00,
+                "2",
+                "Canoas");
 
         // Objeto no cliente
         List<Produto> request = new ArrayList<>();
@@ -55,7 +54,7 @@ public class ClienteUm implements AutoCloseable {
         request.add(produto2);
 
         try {
-            ClienteUm cliente = new ClienteUm();
+            ClienteDois cliente = new ClienteDois();
             String response = cliente.call(request);
             System.out.println(" [x] Relatório da matriz '" + response + "'");
 
